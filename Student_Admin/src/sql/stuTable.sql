@@ -43,7 +43,7 @@ CREATE TABLE `student_info` (
 
 LOCK TABLES `student_info` WRITE;
 /*!40000 ALTER TABLE `student_info` DISABLE KEYS */;
-INSERT INTO `student_info` (`uid`, `name`, `phone_num`, `native_place`, `is_delete`, `age`, `stu_num`) VALUES (1,'梦鱼','18721111111','江西',0,19,'21103206'),(2,'阿拉斯加','18720887438','北京',1,18,'2123344'),(3,'南极洲','18720887666','海南',0,18,'2123349'),(4,'北冰洋','18720887777','北京',0,18,'2123347');
+INSERT INTO `student_info` (`uid`, `name`, `phone_num`, `native_place`, `is_delete`, `age`, `stu_num`) VALUES (1,'梦鱼','18721111111','天津',0,19,'21103206'),(2,'阿拉斯加','18720887438','北京',1,18,'2123344'),(3,'南极洲','18720887666','海南',0,18,'2123349'),(4,'北冰洋','18720887777','北京',0,18,'2123347');
 /*!40000 ALTER TABLE `student_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
