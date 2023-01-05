@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>员工</title>
+		<link th:href="@{/static/css/list.css}" rel="stylesheet" type="text/css">
+		<style th:inline="text">
+			body{
+				background: url("[[@{/static/image/background.png}]]") no-repeat;
+			}
+		</style>
+	</head>
+	<body style="background-size:cover">
+	<!--css样式查询：https://www.w3school.com.cn/css/css_table.asp-->
+	<div id="top">
+			<!--搜索框-->
+			<div id="search" >
+				<form th:action="@{/getEmp}" method="POST">
+					<input type="text" name="empName" th:placeholder="${empName!=''}?${empName}:'  请输入员工名称…'"/>
+					<button type="submit">&nbsp;搜索&nbsp;</button>
+				</form>
+			</div>
+		<!--辅助按钮-->
+			<div th:if="${empName==''}" class="button" style="margin-top: 5px;float: right;margin-right: 230px" >
+				<a th:href="@{/deptSearchAll}">+新增</a>
+			</div>
+			<div th:unless="${empName==''}" class="button" style="margin-top: 5px;float: right;margin-right: 230px" >
+				<a th:href="@{/getEmp}">&lt;返回</a>
+			</div>
+		</div>
+	<!--导航栏-->
+		<div id="content">
+			<ul>
+				<li><a th:href="@{/}">首页</a></li>
+				<li><a th:href="@{/getEmp}">员工信息</a></li>
+				<li><a th:href="@{/getDept}">部门信息</a></li>
+				<li><a th:href="@{/}">其他(暂无)</a></li>
+
+			</ul>
+		</div>
+		<div id="table_div">
+	
+			<table  id="t_emp">
+				<tr>
+					<th  id="table_title" colspan="7">员工信息表</th>
+				</tr>
+				<tr>
+					<th>序号</th>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>邮箱</th>
+					<th>部门</th>
+					<th>入职时间</th>
+					<th>操作</th>
+				</tr>
+				<tr class="my_td" th:if="${#lists.isEmpty(empPage.list)}">
+					<td colspan="7">暂时没有相关员工信息</td>
+				</tr>
+				<tr class="my_td" th:unless="${#lists.isEmpty(empPage.list)}"
+				th:each="emp,empStat:${empPage.list}">
+					<td th:text="${empStat.index+1}">1</td>
+					<td th:text="${emp.empName}">梦鱼</td>
+					<td  th:if="${emp.gender==1}" th:text="男">男</td>
+					<td  th:unless="${emp.gender==1}" th:text="${emp.gender==2}?'女':''">女</td>
+					<td th:text="${emp.email}">********</td>
+					<td th:text="${emp.department.deptName}">**部</td>
+					<td th:text="${emp.hireDate}">2020-12-5</td>
+					<td>
+						<div class="td_div">
+							<div class="button" style="float: left">
+								<a th:href="@{/empSearch(empId=${emp.empId})}">修改</a>
+							</div>
+							<div class="button" style="float: right">
+								<a th:href="@{/empDel(empId=${emp.empId})}">删除</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+		<!--分页部分-->
+		<div id="bottom">
+			<span th:text="|共:${empPage.pages}页|"
+				  style="display: block;width: 100px;margin: 10px 0 0 400px;font-size: 105%;color: black"
+			>共:n页</span>
+			<ul>
+				<li>
+					<a th:href="@{/getEmp(pageNum=1,empName=${empName})}"
+					   th:class="${empPage.isFirstPage==true}?'no':''">首页</a>
+				</li>
+				<li>
+					<a th:href="@{/getEmp(pageNum=${empPage.pageNum}-1,empName=${empName})}"
+					   th:class="${empPage.isFirstPage==true}?'no':''">&lt;&lt;</a>
+				</li>
+				<li th:each="page:${empPage.navigatepageNums}">
+
+					<a th:href="@{getEmp(pageNum=${page},empName=${empName})}"
+					   th:class="${page==empPage.pageNum}?'active':''"
+					   th:text="${page==empPage.pageNum}?'['+${page}+']':${page}">3</a>
+				</li>
+				<li>
+					<a th:href="@{/getEmp(pageNum=${empPage.pageNum}+1,empName=${empName})}"
+					   th:class="${empPage.isLastPage==true}?'no':''">&gt;&gt;</a>
+				</li>
+				<li>
+					<a th:href="@{/getEmp(pageNum=${empPage.pages},empName=${empName})}"
+					   th:class="${empPage.isLastPage==true}?'no':''">末页</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

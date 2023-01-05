@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>部门</title>
+		<link th:href="@{/static/css/list.css}" rel="stylesheet" type="text/css">
+		<style th:inline="text">
+
+			body{
+				background: url("[[@{/static/image/background.png}]]") no-repeat;
+			}
+		</style>
+	</head>
+	<body style="background-size:cover">
+
+		<div id="top">
+			<!--搜索框-->
+			<div id="search" >
+				<form th:action="@{/getDept}" method="POST">
+					<input type="text" name="deptName" th:placeholder="${deptName!=''}?${deptName}:'  请输入部门名称…'"/>
+					<button type="submit">&nbsp;搜索&nbsp;</button>
+				</form>
+			</div>
+			<!--辅助按钮-->
+			<div th:if="${deptName}==''" class="button" style="margin-top: 5px;float: right;margin-right: 230px" >
+				<a th:href="@{/deptEdit}">+新增</a>
+			</div>
+			<div th:unless="${deptName}==''" class="button" style="margin-top: 5px;float: right;margin-right: 230px" >
+				<a th:href="@{/getDept}">&lt;返回</a>
+			</div>
+		</div>
+		<!--导航栏-->
+		<div id="content">
+			<ul>
+				<li><a th:href="@{/}">首页</a></li>
+				<li><a th:href="@{/getEmp}">员工信息</a></li>
+				<li><a th:href="@{/getDept}">部门信息</a></li>
+				<li><a th:href="@{/}">其他(暂无)</a></li>
+
+			</ul>
+		</div>
+		<div id="table_div">
+	
+			<table  id="t_emp">
+				<!--样式查找：https://www.w3school.com.cn/css/css_table.asp-->
+				<tr>
+					<th  id="table_title" colspan="7">部门信息表</th>
+				</tr>
+				<tr>
+					<th>序号</th>
+					<th>部门名称</th>
+					<th>位置</th>
+					<th>创建时间</th>
+					<th>部门人数</th>
+					<th>操作</th>
+				</tr>
+				<tr class="my_td" th:if="${#lists.isEmpty(deptPage.list)}">
+					<td colspan="7">暂时没有相关部门信息</td>
+				</tr>
+				<tr class="my_td" th:unless="${#lists.isEmpty(deptPage.list)}"
+				th:each="dept,deptStat:${deptPage.list}">
+					<td th:text="${deptStat.index+1}">1</td>
+					<td th:text="${dept.deptName}">开发部</td>
+					<td th:text="${dept.location}">中国天津</td>
+					<td th:text="${dept.establishTime}">创建时间</td>
+					<td th:text="${dept.count}">人数</td>
+					<td>
+						<div class="td_div">
+							<div class="button" style="float: left">
+								<a th:href="@{/deptSearch(deptId=${dept.deptId})}">修改</a>
+							</div>
+							<div class="button" style="float: right">
+								<a th:href="@{/deptDel(deptId=${dept.deptId})}">删除</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+		<!--分页部分-->
+		<div id="bottom">
+			<span th:text="|共:${deptPage.pages}页|"
+				  style="display: block;width: 100px;margin: 10px 0 0 400px;font-size: 105%;color: black"
+			>共:n页</span>
+			<ul>
+				<li>
+					<a th:href="@{/getDept(pageNum=1,deptName=${deptName})}"
+					   th:class="${deptPage.isFirstPage==true}?'no':''">首页</a>
+				</li>
+				<li>
+					<a th:href="@{/getDept(pageNum=${deptPage.pageNum}-1,deptName=${deptName})}"
+					   th:class="${deptPage.isFirstPage==true}?'no':''">&lt;&lt;</a>
+				</li>
+				<li th:each="page:${deptPage.navigatepageNums}">
+
+					<a th:href="@{getDept(pageNum=${page},deptName=${deptName})}"
+					   th:class="${page==deptPage.pageNum}?'active':''"
+					   th:text="${page==deptPage.pageNum}?'['+${page}+']':${page}">3</a>
+				</li>
+				<li>
+					<a th:href="@{/getDept(pageNum=${deptPage.pageNum}+1,deptName=${deptName})}"
+					   th:class="${deptPage.isLastPage==true}?'no':''">&gt;&gt;</a>
+				</li>
+				<li>
+					<a th:href="@{/getDept(pageNum=${deptPage.pages},deptName=${deptName})}"
+					   th:class="${deptPage.isLastPage==true}?'no':''">末页</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

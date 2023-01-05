@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dreamfish.admin.dao.DeptMapper">
+    <resultMap id="getAllDept" type="department">
+        <id column="dept_id" property="deptId"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="location" property="location"/>
+        <result column="create_time" property="createTime"/>
+        <association property="count" select="com.dreamfish.admin.dao.EmpMapper.getCount" column="dept_id"/>
+    </resultMap>
+<!--    List<Department> getAllDeptWithPart();-->
+    <select id="getAllDeptWithPart" resultType="department">
+        select dept_id,dept_name from t_dept where is_delete=0
+    </select>
+
+
+    <!--    void delDept(@Param("id")Integer id);-->
+    <update id="delEmp" >
+        update t_dept
+        set is_delete=1
+        where dept_id=#{id}
+    </update>
+
+
+    <!--  通过名称模糊搜索   List<Department> getByName(@Param("name")String name);-->
+    <!--like模糊查询索引会失效-->
+    <select id="getByName" resultMap="getAllDept">
+        select dept_id,dept_name,location,establish_time from t_dept
+        where
+            <if test="name !=''">
+                dept_name like "%"#{name}"%" and
+            </if>
+              is_delete=0
+    </select>
+
+    <!--void addEmp(Employee e);-->
+    <insert id="addDept">
+        insert into t_dept(dept_name, location, establish_time)
+            value (#{deptName},#{location},#{establishTime});
+    </insert>
+<!--    Employee getById(@Param("deptId") Integer id);-->
+    <select id="getById" resultType="department">
+        select dept_id,dept_name,location,establish_time from t_dept
+        where dept_id=#{deptId} and is_delete=0
+    </select>
+
+    <!--    void updateDept(Department e);-->
+    <update id="updateDept" >
+        <!--没东西，update报错-->
+        update t_dept set is_delete=0
+            <if test="location !=null and location !=''">
+                ,location=#{location}
+            </if>
+            <if test="establishTime !=null and establishTime !=''">
+                ,establish_time=#{establishTime}
+            </if>
+        where dept_id=#{deptId}
+    </update>
+</mapper>

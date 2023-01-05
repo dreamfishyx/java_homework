@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>编辑</title>
+		<link th:href="@{/static/css/edit.css}" rel="stylesheet" type="text/css"/>
+		<style th:inline="text">
+			body{
+				background: url("[[@{/static/image/background.png}]]") no-repeat;
+			}
+		</style>
+	</head>
+	<body style="background-size:cover">
+		<div id="div_top">
+			<div class="button" >
+				<a th:href="@{/getEmp}">&lt;返回</a>
+			</div>
+		</div>
+
+		<div id="add_box">
+
+			<div id="list">
+				<form  th:action="@{/empTemp}" method="POST">
+					<span style="font-size: 100%;display: block;margin: auto;width: 100px">员工编辑</span><br/>
+					<input type="hidden" name="empId" th:if="${empUpdate}" th:value="${empUpdate.empId}">
+					姓名：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="empName" th:disabled="${empUpdate}?true:false"
+													  th:placeholder="${empUpdate}?${empUpdate.empName}:' 请输入姓名'"/><br/>
+					<span class="msg" th:text="${empError}?${empError['empName']}:''"></span>
+
+					邮箱：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email" th:placeholder="${empUpdate}?${empUpdate.email}:'请输入邮箱'"/><br/>
+					<span class="msg" th:text="${empError}?${empError['email']}:''"></span>
+
+
+					入职时间:&nbsp;<input type="text" name="hireDate" th:placeholder="${empUpdate}?${empUpdate.hireDate}:' 2022-5-7'"/><br/>
+					<span class="msg" th:text="${empError}?${empError['hireDate']}:''"></span>
+
+
+					性别：&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="1" th:disabled="${empUpdate}?true:false"
+													  th:checked="${empUpdate}?(${empUpdate.gender==1}?true:false):true"/>男
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="gender"  value="2" th:disabled="${empUpdate}?true:false"
+						   th:checked="${empUpdate}?(${empUpdate.gender==2}?true:false):false"/>女<br/>
+					<span class="msg"></span>
+
+					部门：&nbsp;&nbsp;&nbsp;&nbsp;<select name="deptId">
+							<option th:each="dept:${allDept}" th:value="${dept.deptId}"
+							th:text="${dept.deptName}" th:selected="${empUpdate}?(${empUpdate.department.deptId==dept.deptId}?true:false):false">安保部</option>
+						</select><br/>
+					<span class="msg"></span>
+					<button th:text="${empUpdate}?'修改':'新增'" type="submit">提交</button>
+				</form>
+			</div>	
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+    <link th:href="@{/static/css/index.css}" rel="stylesheet" type="text/css"/>
+    <style th:inline="text">
+        body{
+            background: url("[[@{/static/image/background.png}]]") no-repeat;
+        }
+    </style>
+</head>
+<body style="background-size:cover">
+<div class="top">
+
+</div>
+<div id="content">
+    <ul>
+        <li><a th:href="@{/}">首页</a></li>
+        <li><a th:href="@{/getEmp}">员工信息</a></li>
+        <li><a th:href="@{/getDept}">部门信息</a></li>
+        <li><a th:href="@{/}">其他(暂无)</a></li>
+
+    </ul>
+</div>
+<div class="msg" style="text-align: center">
+<h1>这里是个凑数的页面……</h1>
+</div>
+</body>
+</html>

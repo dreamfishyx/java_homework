@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>编辑</title>
+		<link th:href="@{/static/css/edit.css}" rel="stylesheet" type="text/css"/>
+		<style th:inline="text">
+			body{
+				background: url("[[@{/static/image/background.png}]]") no-repeat;
+			}
+		</style>
+	</head>
+	<body style="background-size:cover">
+		<div id="div_top">
+			<div class="button" >
+				<a th:href="@{/getDept}">&lt;返回</a>
+			</div>
+		</div>
+
+		<div id="add_box">
+
+			<div id="list">
+				<form  th:action="@{deptTemp}" method="POST">
+					<input type="hidden" name="deptId" th:value="${deptUpdate.deptId}" th:if="${deptUpdate}">
+					<span style="font-size: 100%;display: block;margin: auto;width: 100px">部门编辑</span><br/>
+					名称：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="DeptName" th:disabled="${deptUpdate}?true:false"
+													  th:placeholder="${deptUpdate}?${deptUpdate.deptName}:' 请输入部门名称'"/><br/>
+					<span class="msg" th:text="${deptError}?${deptError['deptNane']}:''"></span>
+
+					位置：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="location" th:placeholder="${deptUpdate}?${deptUpdate.location}:' 请输入部门位置'"/><br/>
+					<span class="msg"></span>
+					创建时间:&nbsp;<input type="text" name="establishTime" th:placeholder="${deptUpdate}?${deptUpdate.establishTime}:'  2022-5-7'"/><br/>
+					<span class="msg" th:text="${deptError}?${deptError['establishTime']}:''"></span>
+
+					<button th:text="${deptUpdate}?'修改':'新增'" type="submit">提交</button>
+
+				</form>
+			</div>	
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,204 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: STXinwei;
+}
+/*目录*/
+#content{
+    float: left;
+    border-radius:0 15px 15px 0;
+    margin: 3px 0;
+    width: 165px;
+    background-color: #d8d8d8;
+}
+#content ul{
+    width: 165px;
+    display: block;
+    margin: auto;
+
+}
+#content ul li{
+    display: block;
+    width: 165px;
+    list-style: none;
+}
+#content ul li:hover{
+    background-color:#b9babd ;
+}
+#content ul li:first-child{
+    border-radius: 0 15px 0 0 ;
+}
+#content ul li:last-child{
+    border-radius: 0 0 15px 0;
+}
+#content  ul li a{
+    text-decoration: none;
+    display: block;
+    width: 120px;
+    text-align: center;
+    color: black;
+    margin: 0 auto;
+    padding: 15px 0;
+    font-size: 110%;
+    border-bottom: 1px solid black;
+}
+#content ul li:last-child a{
+    border-bottom: none;
+}
+/*搜素*/
+#search input{
+    width:270px;
+    border-radius: 7px 0 0 7px;
+    height: 45px;
+    border: none;
+    background-color:white;
+    font-size:110%;
+    letter-spacing:2px;
+}
+#search input:focus{
+    background-color:#d6d6d6 ;
+    border: none;
+
+}
+#search button{
+    border:none;
+    background-color:#8fdbf8;
+    border-radius: 7px;
+    margin: 0 5px;
+}
+#search button:hover{
+    cursor: pointer;
+}
+#search{
+    border-radius: 7px;
+    width:325px;
+    height:45px;
+    /*border: 2px solid black;*/
+    margin:5px auto;
+    background-color: #8fdbf8;
+}
+
+#table_div{
+    width: 100%;
+}
+table{
+    border-collapse: separate;
+    /*border: 1px solid #7b7e80;*/
+    border-radius: 10px;
+    width: 72%;
+    margin:0 auto;
+    overflow: hidden;
+}
+
+tr{
+    /*padding: 5px 6px ;*/
+}
+td{
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    height:36px ;
+    font-size: 111%;
+}
+th{
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    height:46px ;
+    font-size: 127%;
+    background-color: #8fdbf8;
+}
+.my_td:hover {
+    color: red;
+}
+
+/*even偶数，odd奇数*/
+tr:nth-child(even) td{background-color:#e5efd2 ;}
+tr:nth-child(odd) td{background-color:#dcf2f7;}
+table tr:first-child th:first-child{
+    border-top-left-radius: 10px;
+}
+table tr:first-child th:last-child{
+    border-top-right-radius: 10px;
+}
+table tr:last-child td:first-child{
+    border-bottom-left-radius: 10px;
+}
+table tr:last-child td:last-child{
+    border-bottom-right-radius: 10px;
+}
+
+#top{
+    height: 90px;
+    /*border: 1px solid black;*/
+}
+.button{
+    height: 30px;
+    width: 60px;
+    border-radius: 8px;
+    background-color: #fc7a7c;
+    margin: 0 10px;
+
+}
+.button a{
+    display:block;
+    margin: auto 0;
+    padding: 5px 0 0 0 ;
+    color: black;
+    text-align: center;
+    font-size: 110%;
+    text-decoration:none;
+}
+
+.td_div{
+    width: 180px;
+    margin: auto;
+    height: 100%;
+    padding:5px;
+}
+#bottom{
+    margin:0 0 0 170px;
+    text-align: center;
+
+}
+#bottom ul{
+    display: block;
+    margin: auto;
+    height: 50px;
+    width: 360px;
+    /*clear: left;*/
+    border-radius: 10px;
+    overflow: hidden;
+}
+#bottom ul li{
+    list-style: none;
+    display: block;
+    float: left;
+    background-color: #dadada;
+    margin: 8px 0;
+    overflow: hidden;
+
+}
+a.active{
+    color: red !important;
+}
+#bottom ul li a{
+    text-decoration:none;
+    display: block;
+    border: 1px solid #a7a7a7;
+    padding:10px 10px;
+    color: skyblue;
+    text-align: center;
+    font-size: 90%;
+}
+#bottom ul li .no{
+    cursor:not-allowed !important;
+/*还是可以点击、待解决*/
+}
+#bottom ul li:last-child{
+    border-radius: 0 10px 10px 0;
+}#bottom ul li:first-child{
+    border-radius: 10px 0 0 10px;
+}
+
+

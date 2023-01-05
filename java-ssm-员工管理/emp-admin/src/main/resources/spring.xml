@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--spring配置文件，主要配置业务逻辑有关-->
+
+    <!--组件扫描-->
+    <context:component-scan base-package="com.dreamfish.admin">
+        <!--不扫描controller注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入外部属性文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${prop.driverClass}"/>
+        <property name="url" value="${prop.url}"/>
+        <property name="username" value="${prop.userName}"/>
+        <property name="password" value="${prop.password}"/>
+        <property name="initialSize" value="${prop.initialSize}"/>
+        <property name="maxActive" value="${prop.maxActive}"/>
+        <property name="maxWait" value="${prop.maxWait}"/>
+    </bean>
+
+    <!-- 配置 SqlSessionFactoryBean --><!--Mybatis与spring整合-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- mybatis配置文件位置 -->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <!-- 装配数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 指定 Mapper 配置文件的位置(mapper接口和映射文件包名不一致则设置) -->
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描所有dao接口，加入到IOC容器中-->
+        <property name="basePackage" value="com.dreamfish.admin.dao"/>
+    </bean>
+
+
+    <!--配置mapper接口的扫描
+    <mybatis:scan base-package="com.dreamfish.curd.dao"/>
+     可以用@MapperScan注解替代
+        -->
+
+    <!--配置一个可以批量处理的sqlSession-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="executorType" value="BATCH"/>
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 装配数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--重要的事务一般采用xml方式，而非注解方式-->
+    <aop:config>
+        <!--配置切入点,此处..表示包括目录下的子包,*表示所有类-->
+        <aop:pointcut id="txPoint" expression="execution(* com.dreamfish.admin.service..*(..))"/>
+        <!--配置事务增强-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+    </aop:config>
+    <!--transcaction-manager要与事务管理器id值一致-->
+    <!--此处尤为注意，是否正确将tx命名空间及其对应的约束添加-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!--指定那种方法添加事务-->
+        <tx:attributes>
+            <!--所有方法添加事务-->
+            <tx:method name="*"/>
+            <!--get开头方法为查询，设置只读即可-->
+            <tx:method name="get*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+</beans>

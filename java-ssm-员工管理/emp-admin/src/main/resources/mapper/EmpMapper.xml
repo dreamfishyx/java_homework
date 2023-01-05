@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dreamfish.admin.dao.EmpMapper">
+
+    <sql id="emp_all">
+        e.emp_id ,e.emp_name ,e.gender ,e.email  ,e.hire_date,
+            d.dept_id ,d.dept_name ,d.location ,d.establish_time
+    </sql>
+    <resultMap id="empAndDept" type="employee">
+        <id column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <result column="hire_date" property="hireDate"/>
+        <association property="department" javaType="department">
+            <id column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+            <result column="location" property="location"/>
+            <result column="establish_time" property="establishTime"/>
+        </association>
+        
+    </resultMap>
+<!--    Employee getById(@Param("empId")Integer id);-->
+    <select id="getById" resultMap="empAndDept">
+        select <include refid="emp_all"/>
+            from t_emp e left join t_dept d
+        on e.department=d.dept_id
+            where e.is_delete=0 and e.emp_id=#{empId}
+    </select>
+
+<!--    int getCount(@Param("id")int id); -->
+    <select id="getCount" resultType="_int">
+        select count(1) from t_emp
+                        where department=#{id} and is_delete=0
+    </select>
+
+<!--    void delEmp(@Param("id")Integer id);-->
+    <update id="delEmp" >
+        update t_emp
+            set is_delete=1
+        where emp_id=#{id}
+    </update>
+
+<!--  通过名称模糊搜索   List<Employee> getByName(@Param("name")String name);-->
+
+    <select id="getByName" resultMap="empAndDept">
+        select <include refid="emp_all"/>
+        from t_emp e left join t_dept d
+        on e.department=d.dept_id
+        where
+            <if test="name !=''">
+                e.emp_name like "%"#{name}"%" and
+            </if>
+            e.is_delete=0
+    </select>
+
+<!--    void addEmp(Employee e);-->
+    <insert id="addEmp">
+        insert into t_emp(emp_name, gender, email, department, hire_date)
+            value (#{empName},#{gender},#{email},#{deptId},#{hireDate});
+    </insert>
+
+<!--    void updateEmp(Employee e);-->
+    <update id="updateEmp" >
+        update t_emp
+    <trim prefix="set" suffixOverrides=",">
+        <if test="email!=null and email!=''">
+            email=#{email},
+        </if>
+        <if test="deptId !=null">
+            department=#{deptId},
+        </if>
+        <if test="hireDate !=null and hireDate !=''">
+            hire_date=#{hireDate},
+        </if>
+    </trim>
+        where emp_id=#{empId}
+    </update>
+</mapper>
